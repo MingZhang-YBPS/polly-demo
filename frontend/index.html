@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Amazon Polly 语音合成演示</title>
+  <!-- 样式文件 -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- 主容器 -->
+  <main class="container" role="main">
+    <!-- 页面标题 -->
+    <h1 class="app-title">语音合成演示</h1>
+
+    <!-- 使用说明 -->
+    <p class="instructions" aria-label="使用说明">
+      在下方输入或粘贴文本，选中想要朗读的部分，然后右键选择语言即可听到语音朗读。
+    </p>
+
+    <!-- 文本输入区域 -->
+    <textarea
+      id="text-input"
+      class="text-input"
+      placeholder="请在此输入或粘贴文本..."
+      aria-label="文本输入区域"
+      rows="10"
+    ></textarea>
+
+    <!-- 加载指示器（默认隐藏） -->
+    <div id="loading-indicator" class="loading-indicator" role="status" aria-live="polite" hidden>
+      <span class="spinner" aria-hidden="true"></span>
+      <span>语音合成中，请稍候...</span>
+    </div>
+
+    <!-- 错误消息容器（默认隐藏） -->
+    <div id="error-message" class="error-message" role="alert" aria-live="assertive" hidden>
+    </div>
+
+    <!-- 音频播放器 -->
+    <audio id="audio-player" aria-label="语音播放器"></audio>
+  </main>
+
+  <!-- 自定义上下文菜单（默认隐藏） -->
+  <div id="context-menu" class="context-menu" role="menu" aria-label="语言选择菜单" style="display: none;">
+    <button class="context-menu-item" role="menuitem" data-language="zh">中文</button>
+    <button class="context-menu-item" role="menuitem" data-language="en">English</button>
+    <button class="context-menu-item" role="menuitem" data-language="yue">广东话</button>
+  </div>
+
+  <!-- 交互逻辑（按依赖顺序加载） -->
+  <script src="apiClient.js"></script>
+  <script src="audioPlayer.js"></script>
+  <script src="uiState.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

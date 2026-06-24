@@ -1,0 +1,261 @@
+{
+  "pbtResults": {},
+  "executionHistory": {
+    "1.1 创建后端项目结构和依赖配置": [
+      {
+        "executionId": "54340813-8ba7-4362-9db7-234d6b8a58ec",
+        "chatSessionId": "sess_4a4615ca-5b24-4fcd-919f-12fa2394c410",
+        "timestamp": 1782300477407
+      },
+      {
+        "executionId": "54340813-8ba7-4362-9db7-234d6b8a58ec",
+        "chatSessionId": "sess_4a4615ca-5b24-4fcd-919f-12fa2394c410",
+        "timestamp": 1782300493180
+      },
+      {
+        "executionId": "54340813-8ba7-4362-9db7-234d6b8a58ec",
+        "chatSessionId": "sess_4a4615ca-5b24-4fcd-919f-12fa2394c410",
+        "timestamp": 1782300601499
+      }
+    ],
+    "1.2 创建前端项目结构": [
+      {
+        "executionId": "54340813-8ba7-4362-9db7-234d6b8a58ec",
+        "chatSessionId": "sess_4a4615ca-5b24-4fcd-919f-12fa2394c410",
+        "timestamp": 1782300478596
+      },
+      {
+        "executionId": "54340813-8ba7-4362-9db7-234d6b8a58ec",
+        "chatSessionId": "sess_4a4615ca-5b24-4fcd-919f-12fa2394c410",
+        "timestamp": 1782300495392
+      },
+      {
+        "executionId": "54340813-8ba7-4362-9db7-234d6b8a58ec",
+        "chatSessionId": "sess_4a4615ca-5b24-4fcd-919f-12fa2394c410",
+        "timestamp": 1782300602515
+      }
+    ],
+    "2.1 实现语言-语音映射模块 (voiceMapping.mjs)": [
+      {
+        "executionId": "54340813-8ba7-4362-9db7-234d6b8a58ec",
+        "chatSessionId": "sess_4a4615ca-5b24-4fcd-919f-12fa2394c410",
+        "timestamp": 1782300478658
+      },
+      {
+        "executionId": "54340813-8ba7-4362-9db7-234d6b8a58ec",
+        "chatSessionId": "sess_4a4615ca-5b24-4fcd-919f-12fa2394c410",
+        "timestamp": 1782300609833
+      },
+      {
+        "executionId": "54340813-8ba7-4362-9db7-234d6b8a58ec",
+        "chatSessionId": "sess_4a4615ca-5b24-4fcd-919f-12fa2394c410",
+        "timestamp": 1782300711767
+      }
+    ],
+    "2.3 实现 Lambda 处理函数 (index.mjs)": [
+      {
+        "executionId": "54340813-8ba7-4362-9db7-234d6b8a58ec",
+        "chatSessionId": "sess_4a4615ca-5b24-4fcd-919f-12fa2394c410",
+        "timestamp": 1782300478712
+      },
+      {
+        "executionId": "54340813-8ba7-4362-9db7-234d6b8a58ec",
+        "chatSessionId": "sess_4a4615ca-5b24-4fcd-919f-12fa2394c410",
+        "timestamp": 1782300719737
+      },
+      {
+        "executionId": "54340813-8ba7-4362-9db7-234d6b8a58ec",
+        "chatSessionId": "sess_4a4615ca-5b24-4fcd-919f-12fa2394c410",
+        "timestamp": 1782300829591
+      }
+    ],
+    "3. Checkpoint - 确保后端所有测试通过": [
+      {
+        "executionId": "54340813-8ba7-4362-9db7-234d6b8a58ec",
+        "chatSessionId": "sess_4a4615ca-5b24-4fcd-919f-12fa2394c410",
+        "timestamp": 1782300478757
+      },
+      {
+        "executionId": "54340813-8ba7-4362-9db7-234d6b8a58ec",
+        "chatSessionId": "sess_4a4615ca-5b24-4fcd-919f-12fa2394c410",
+        "timestamp": 1782300877370
+      },
+      {
+        "executionId": "54340813-8ba7-4362-9db7-234d6b8a58ec",
+        "chatSessionId": "sess_4a4615ca-5b24-4fcd-919f-12fa2394c410",
+        "timestamp": 1782300891270
+      }
+    ],
+    "4.1 实现主页面结构 (index.html)": [
+      {
+        "executionId": "54340813-8ba7-4362-9db7-234d6b8a58ec",
+        "chatSessionId": "sess_4a4615ca-5b24-4fcd-919f-12fa2394c410",
+        "timestamp": 1782300478824
+      },
+      {
+        "executionId": "54340813-8ba7-4362-9db7-234d6b8a58ec",
+        "chatSessionId": "sess_4a4615ca-5b24-4fcd-919f-12fa2394c410",
+        "timestamp": 1782300611097
+      },
+      {
+        "executionId": "54340813-8ba7-4362-9db7-234d6b8a58ec",
+        "chatSessionId": "sess_4a4615ca-5b24-4fcd-919f-12fa2394c410",
+        "timestamp": 1782300712799
+      }
+    ],
+    "4.2 实现页面样式 (style.css)": [
+      {
+        "executionId": "54340813-8ba7-4362-9db7-234d6b8a58ec",
+        "chatSessionId": "sess_4a4615ca-5b24-4fcd-919f-12fa2394c410",
+        "timestamp": 1782300478876
+      },
+      {
+        "executionId": "54340813-8ba7-4362-9db7-234d6b8a58ec",
+        "chatSessionId": "sess_4a4615ca-5b24-4fcd-919f-12fa2394c410",
+        "timestamp": 1782300720685
+      },
+      {
+        "executionId": "54340813-8ba7-4362-9db7-234d6b8a58ec",
+        "chatSessionId": "sess_4a4615ca-5b24-4fcd-919f-12fa2394c410",
+        "timestamp": 1782300830442
+      }
+    ],
+    "5.1 实现上下文菜单模块 (ContextMenuModule)": [
+      {
+        "executionId": "54340813-8ba7-4362-9db7-234d6b8a58ec",
+        "chatSessionId": "sess_4a4615ca-5b24-4fcd-919f-12fa2394c410",
+        "timestamp": 1782300478922
+      },
+      {
+        "executionId": "54340813-8ba7-4362-9db7-234d6b8a58ec",
+        "chatSessionId": "sess_4a4615ca-5b24-4fcd-919f-12fa2394c410",
+        "timestamp": 1782300922677
+      },
+      {
+        "executionId": "54340813-8ba7-4362-9db7-234d6b8a58ec",
+        "chatSessionId": "sess_4a4615ca-5b24-4fcd-919f-12fa2394c410",
+        "timestamp": 1782301067674
+      }
+    ],
+    "5.4 实现 API 通信模块 (ApiClientModule)": [
+      {
+        "executionId": "54340813-8ba7-4362-9db7-234d6b8a58ec",
+        "chatSessionId": "sess_4a4615ca-5b24-4fcd-919f-12fa2394c410",
+        "timestamp": 1782300478964
+      },
+      {
+        "executionId": "54340813-8ba7-4362-9db7-234d6b8a58ec",
+        "chatSessionId": "sess_4a4615ca-5b24-4fcd-919f-12fa2394c410",
+        "timestamp": 1782300922837
+      },
+      {
+        "executionId": "54340813-8ba7-4362-9db7-234d6b8a58ec",
+        "chatSessionId": "sess_4a4615ca-5b24-4fcd-919f-12fa2394c410",
+        "timestamp": 1782301068190
+      }
+    ],
+    "5.6 实现音频播放模块 (AudioPlayerModule)": [
+      {
+        "executionId": "54340813-8ba7-4362-9db7-234d6b8a58ec",
+        "chatSessionId": "sess_4a4615ca-5b24-4fcd-919f-12fa2394c410",
+        "timestamp": 1782300479010
+      },
+      {
+        "executionId": "54340813-8ba7-4362-9db7-234d6b8a58ec",
+        "chatSessionId": "sess_4a4615ca-5b24-4fcd-919f-12fa2394c410",
+        "timestamp": 1782300922898
+      },
+      {
+        "executionId": "54340813-8ba7-4362-9db7-234d6b8a58ec",
+        "chatSessionId": "sess_4a4615ca-5b24-4fcd-919f-12fa2394c410",
+        "timestamp": 1782301069026
+      }
+    ],
+    "5.7 实现 UI 状态管理 (UIStateModule)": [
+      {
+        "executionId": "54340813-8ba7-4362-9db7-234d6b8a58ec",
+        "chatSessionId": "sess_4a4615ca-5b24-4fcd-919f-12fa2394c410",
+        "timestamp": 1782300479057
+      },
+      {
+        "executionId": "54340813-8ba7-4362-9db7-234d6b8a58ec",
+        "chatSessionId": "sess_4a4615ca-5b24-4fcd-919f-12fa2394c410",
+        "timestamp": 1782300922971
+      },
+      {
+        "executionId": "54340813-8ba7-4362-9db7-234d6b8a58ec",
+        "chatSessionId": "sess_4a4615ca-5b24-4fcd-919f-12fa2394c410",
+        "timestamp": 1782301070177
+      }
+    ],
+    "6.1 将所有前端模块连接整合 (app.js 主入口)": [
+      {
+        "executionId": "54340813-8ba7-4362-9db7-234d6b8a58ec",
+        "chatSessionId": "sess_4a4615ca-5b24-4fcd-919f-12fa2394c410",
+        "timestamp": 1782300479108
+      },
+      {
+        "executionId": "54340813-8ba7-4362-9db7-234d6b8a58ec",
+        "chatSessionId": "sess_4a4615ca-5b24-4fcd-919f-12fa2394c410",
+        "timestamp": 1782301079171
+      },
+      {
+        "executionId": "54340813-8ba7-4362-9db7-234d6b8a58ec",
+        "chatSessionId": "sess_4a4615ca-5b24-4fcd-919f-12fa2394c410",
+        "timestamp": 1782301202132
+      }
+    ],
+    "7. 最终 Checkpoint - 确保所有测试通过": [
+      {
+        "executionId": "54340813-8ba7-4362-9db7-234d6b8a58ec",
+        "chatSessionId": "sess_4a4615ca-5b24-4fcd-919f-12fa2394c410",
+        "timestamp": 1782300479185
+      },
+      {
+        "executionId": "54340813-8ba7-4362-9db7-234d6b8a58ec",
+        "chatSessionId": "sess_4a4615ca-5b24-4fcd-919f-12fa2394c410",
+        "timestamp": 1782301209748
+      },
+      {
+        "executionId": "54340813-8ba7-4362-9db7-234d6b8a58ec",
+        "chatSessionId": "sess_4a4615ca-5b24-4fcd-919f-12fa2394c410",
+        "timestamp": 1782301284314
+      }
+    ],
+    "1. 搭建项目结构和核心配置": [
+      {
+        "executionId": "54340813-8ba7-4362-9db7-234d6b8a58ec",
+        "chatSessionId": "sess_4a4615ca-5b24-4fcd-919f-12fa2394c410",
+        "timestamp": 1782300602577
+      }
+    ],
+    "2. 实现后端语言映射和输入验证": [
+      {
+        "executionId": "54340813-8ba7-4362-9db7-234d6b8a58ec",
+        "chatSessionId": "sess_4a4615ca-5b24-4fcd-919f-12fa2394c410",
+        "timestamp": 1782300829703
+      }
+    ],
+    "4. 实现前端文本输入和页面布局": [
+      {
+        "executionId": "54340813-8ba7-4362-9db7-234d6b8a58ec",
+        "chatSessionId": "sess_4a4615ca-5b24-4fcd-919f-12fa2394c410",
+        "timestamp": 1782300830983
+      }
+    ],
+    "5. 实现前端交互逻辑": [
+      {
+        "executionId": "54340813-8ba7-4362-9db7-234d6b8a58ec",
+        "chatSessionId": "sess_4a4615ca-5b24-4fcd-919f-12fa2394c410",
+        "timestamp": 1782301070267
+      }
+    ],
+    "6. 集成和联调": [
+      {
+        "executionId": "54340813-8ba7-4362-9db7-234d6b8a58ec",
+        "chatSessionId": "sess_4a4615ca-5b24-4fcd-919f-12fa2394c410",
+        "timestamp": 1782301202209
+      }
+    ]
+  }
+}

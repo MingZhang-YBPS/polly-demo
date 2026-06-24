@@ -1,0 +1,10 @@
+{
+  "name": "polly-tts-frontend",
+  "version": "1.0.0",
+  "description": "Amazon Polly 语音合成演示 - 前端",
+  "private": true,
+  "scripts": {
+    "dev": "npx serve . -l 8080",
+    "start": "npx serve . -l 8080"
+  }
+}

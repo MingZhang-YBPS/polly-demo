@@ -1,0 +1,11 @@
+# SAM CLI 部署配置文件
+# 使用 sam deploy 时自动读取此配置
+
+version = 0.1
+
+[default.deploy.parameters]
+stack_name = "polly-tts-demo"
+region = "ap-east-1"
+confirm_changeset = true
+capabilities = "CAPABILITY_IAM"
+resolve_s3 = true

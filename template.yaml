@@ -1,0 +1,43 @@
+# AWS SAM 模板 - Amazon Polly 文字转语音演示
+# 部署区域：ap-east-1（香港）
+
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  Amazon Polly Text-to-Speech Demo - 文字转语音演示应用
+  部署区域: ap-east-1（香港）
+
+Globals:
+  Function:
+    Timeout: 30
+    MemorySize: 512
+
+Resources:
+  # Lambda 函数 - 处理语音合成请求
+  PollyTtsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.handler
+      Runtime: nodejs20.x
+      CodeUri: backend/
+      MemorySize: 512
+      Timeout: 30
+      Architectures:
+        - arm64
+      AutoPublishAlias: live
+      ProvisionedConcurrencyConfig:
+        ProvisionedConcurrentExecutions: 2
+      FunctionUrlConfig:
+        AuthType: NONE
+      Policies:
+        - Statement:
+            - Effect: Allow
+              Action:
+                - polly:SynthesizeSpeech
+              Resource: '*'
+
+Outputs:
+  # Lambda Function URL（前端配置此地址）
+  FunctionUrl:
+    Description: "Lambda Function URL（前端配置此地址）"
+    Value: !GetAtt PollyTtsFunctionUrl.FunctionUrl

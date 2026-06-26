@@ -175,6 +175,8 @@ export const VOICE_MAP = {
 
 - 每次新合成开始时调用 `AbortController.abort()` 取消所有旧的 fetch 请求
 - 同时调用 `audioPlayer.stop()` 停止当前播放
+- `stop()` 通过保存的 `_rejectCurrent` 引用主动 reject 悬挂的 playSegment Promise（抛出 AbortError）
+- 预取请求通过 `_fetchWithAbortHandling()` 包装，被取消时返回 null 而非产生 unhandled rejection
 - AbortError 被静默处理，不显示错误
 
 ### 音频播放解锁
@@ -279,19 +281,22 @@ class SynthesisOrchestrator {
       const PREFETCH = 2;
       const audioPromises = [];
 
+      // 启动预取请求（添加 .catch 防止 unhandled rejection）
       for (let i = 0; i < Math.min(PREFETCH, sentences.length); i++) {
-        audioPromises[i] = this.apiClient.synthesize(sentences[i], language, signal);
+        audioPromises[i] = this._fetchWithAbortHandling(sentences[i], language, signal);
       }
 
       for (let i = 0; i < sentences.length; i++) {
         if (signal.aborted) return;
         const audioBlob = await audioPromises[i];
-        if (signal.aborted) return;
+
+        // 如果被取消，audioBlob 为 null
+        if (!audioBlob || signal.aborted) return;
         if (i === 0) this.uiState.hideLoading();
 
         const nextIdx = i + PREFETCH;
         if (nextIdx < sentences.length) {
-          audioPromises[nextIdx] = this.apiClient.synthesize(sentences[nextIdx], language, signal);
+          audioPromises[nextIdx] = this._fetchWithAbortHandling(sentences[nextIdx], language, signal);
         }
 
         await this.audioPlayer.playSegment(audioBlob);
@@ -302,6 +307,18 @@ class SynthesisOrchestrator {
     } finally {
       this.uiState.hideLoading();
     }
+  }
+
+  /**
+   * 发送合成请求，AbortError 时返回 null 而非抛出异常
+   * 防止预取的 Promise 在被取消时产生 unhandled rejection
+   */
+  _fetchWithAbortHandling(sentence, language, signal) {
+    return this.apiClient.synthesize(sentence, language, signal)
+      .catch(e => {
+        if (e.name === 'AbortError') return null;
+        throw e;
+      });
   }
 }
 ```
@@ -350,19 +367,16 @@ class ApiClientModule {
 ### Frontend - AudioPlayerModule
 
 ```javascript
-// 音频播放模块 - 逐句播放模式
+// 音频播放模块 - 逐句播放模式，支持外部中断
 class AudioPlayerModule {
   constructor(audioElement) {
     this.audioElement = audioElement;
     this.currentBlobUrl = null;
     this.isPlaying = false;
+    // 存储当前 playSegment 的 reject 函数，用于从外部中断播放
+    this._rejectCurrent = null;
   }
 
-  /**
-   * 播放单个音频片段，返回 Promise（播放完成时 resolve）
-   * @param {Blob} audioBlob - 音频 Blob 数据
-   * @returns {Promise<void>} 播放完成后 resolve
-   */
   async playSegment(audioBlob) {
     this._cleanup();
     this.currentBlobUrl = URL.createObjectURL(audioBlob);
@@ -370,13 +384,28 @@ class AudioPlayerModule {
     this.isPlaying = true;
 
     await new Promise((resolve, reject) => {
-      this.audioElement.onended = resolve;
-      this.audioElement.onerror = reject;
+      // 保存 reject 引用，以便 stop() 可以中断此 Promise
+      this._rejectCurrent = reject;
+
+      this.audioElement.onended = () => {
+        this._rejectCurrent = null;
+        resolve();
+      };
+      this.audioElement.onerror = (e) => {
+        this._rejectCurrent = null;
+        reject(e);
+      };
       this.audioElement.oncanplaythrough = () => {
-        this.audioElement.play().catch(reject);
+        this.audioElement.play().catch((err) => {
+          this._rejectCurrent = null;
+          reject(err);
+        });
       };
       if (this.audioElement.readyState >= 4) {
-        this.audioElement.play().catch(reject);
+        this.audioElement.play().catch((err) => {
+          this._rejectCurrent = null;
+          reject(err);
+        });
       }
     });
 
@@ -390,6 +419,15 @@ class AudioPlayerModule {
     this.audioElement.onerror = null;
     this.audioElement.oncanplaythrough = null;
     this.isPlaying = false;
+
+    // 中断正在等待的 playSegment Promise
+    // 抛出 AbortError 让调用方的 catch 能识别为取消操作
+    if (this._rejectCurrent) {
+      const abortError = new DOMException('Playback aborted', 'AbortError');
+      this._rejectCurrent(abortError);
+      this._rejectCurrent = null;
+    }
+
     this._cleanup();
   }
 
@@ -586,3 +624,15 @@ export const handler = async (event) => {
 *For any* Polly 服务返回的错误，Lambda 函数应返回 HTTP 500 状态码，且响应体应包含描述性错误信息。
 
 **Validates: Requirements 6.5**
+
+### Property 9: 取消完整性
+
+*For any* 正在进行的合成（包括 in-flight 请求和正在播放的音频），当用户发起新合成时，所有旧的 fetch 请求应被 abort，正在播放的音频应被停止，且不应产生 unhandled promise rejection 或内存泄漏。
+
+**Validates: Requirements 10.1, 10.2, 10.3, 10.4**
+
+### Property 10: 分句流式播放
+
+*For any* 包含多个标点分隔句子的文本，前端应按句依次播放音频，且第一句开始播放前的等待时间应仅取决于第一句的合成时间，而非全文的合成时间。
+
+**Validates: Requirements 9.1, 9.2, 9.3, 9.4, 9.5**

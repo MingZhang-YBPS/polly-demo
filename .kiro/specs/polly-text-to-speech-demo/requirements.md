@@ -90,7 +90,7 @@
 
 1. THE Function_URL SHALL be deployed in the AWS ap-east-1 region.
 2. THE Lambda_Function SHALL be deployed in the AWS ap-east-1 region.
-3. THE Lambda_Function SHALL call the Polly_Service in the ap-east-1 region.
+3. THE Lambda_Function SHALL call the Polly_Service in the ap-southeast-1 region, because ap-east-1 does not support the neural engine.
 
 ### Requirement 8: Minimal UI Design
 
@@ -101,3 +101,35 @@
 1. THE Frontend SHALL present a single-page layout with the text input area as the primary element.
 2. THE Frontend SHALL include brief usage instructions visible to the user.
 3. THE Context_Menu SHALL display language options in a compact, readable format.
+
+### Requirement 9: Streaming Playback
+
+**User Story:** As a user, I want long text to start playing quickly without waiting for the entire synthesis to complete, so that I get immediate audio feedback.
+
+#### Acceptance Criteria
+
+1. WHEN the user selects text containing multiple sentences, THE Frontend SHALL split the text by punctuation marks (。！？；.!?;\n) into individual sentences.
+2. THE Frontend SHALL send synthesis requests for the first 2 sentences immediately (parallel prefetch window = 2).
+3. WHEN the first sentence audio is ready, THE Audio_Player SHALL begin playback immediately without waiting for subsequent sentences.
+4. WHILE a sentence is playing, THE Frontend SHALL prefetch the next sentence's audio (sliding window).
+5. WHEN a sentence finishes playing, THE Audio_Player SHALL seamlessly begin playing the next sentence without user interaction.
+
+### Requirement 10: Instant Cancellation
+
+**User Story:** As a user, I want to be able to start a new speech synthesis at any time, with the previous one stopping immediately, so that I don't have to wait for old audio to finish.
+
+#### Acceptance Criteria
+
+1. WHEN the user initiates a new speech synthesis while audio is playing, THE Frontend SHALL immediately stop the current audio playback.
+2. WHEN the user initiates a new speech synthesis while requests are in progress, THE Frontend SHALL cancel all in-flight HTTP requests (using AbortController).
+3. WHEN a synthesis is cancelled by the user, THE Frontend SHALL NOT display any error message to the user.
+4. WHEN a synthesis is cancelled, all previously prefetched but un-played audio data SHALL be discarded.
+
+### Requirement 11: Audio Playback Unlock
+
+**User Story:** As a user, I want audio to play reliably after I click a language option, regardless of browser autoplay restrictions.
+
+#### Acceptance Criteria
+
+1. WHEN the user clicks a language option in the Context_Menu, THE Frontend SHALL immediately play a silent audio clip to unlock the browser's autoplay restriction.
+2. THE Frontend SHALL ensure that subsequent asynchronous audio play() calls are not blocked by the browser's autoplay policy.

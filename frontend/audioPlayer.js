@@ -15,6 +15,8 @@ class AudioPlayerModule {
     this.currentBlobUrl = null;
     // 当前是否正在播放
     this.isPlaying = false;
+    // 存储当前 playSegment 的 reject 函数，用于从外部中断播放
+    this._rejectCurrent = null;
   }
 
   /**
@@ -33,14 +35,29 @@ class AudioPlayerModule {
 
     // 等待音频播放完成
     await new Promise((resolve, reject) => {
-      this.audioElement.onended = resolve;
-      this.audioElement.onerror = reject;
+      // 保存 reject 引用，以便 stop() 可以中断此 Promise
+      this._rejectCurrent = reject;
+
+      this.audioElement.onended = () => {
+        this._rejectCurrent = null;
+        resolve();
+      };
+      this.audioElement.onerror = (e) => {
+        this._rejectCurrent = null;
+        reject(e);
+      };
       this.audioElement.oncanplaythrough = () => {
-        this.audioElement.play().catch(reject);
+        this.audioElement.play().catch((err) => {
+          this._rejectCurrent = null;
+          reject(err);
+        });
       };
       // 如果已经可以播放，直接开始
       if (this.audioElement.readyState >= 4) {
-        this.audioElement.play().catch(reject);
+        this.audioElement.play().catch((err) => {
+          this._rejectCurrent = null;
+          reject(err);
+        });
       }
     });
 
@@ -57,6 +74,15 @@ class AudioPlayerModule {
     this.audioElement.onerror = null;
     this.audioElement.oncanplaythrough = null;
     this.isPlaying = false;
+
+    // 中断正在等待的 playSegment Promise
+    // 抛出 AbortError 让调用方的 catch 能识别为取消操作
+    if (this._rejectCurrent) {
+      const abortError = new DOMException('Playback aborted', 'AbortError');
+      this._rejectCurrent(abortError);
+      this._rejectCurrent = null;
+    }
+
     this._cleanup();
   }
 

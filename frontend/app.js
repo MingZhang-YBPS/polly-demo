@@ -178,9 +178,9 @@ class SynthesisOrchestrator {
       const PREFETCH = 2;
       const audioPromises = [];
 
-      // 启动前 PREFETCH 句的请求
+      // 启动预取请求（添加 .catch 防止 unhandled rejection）
       for (let i = 0; i < Math.min(PREFETCH, sentences.length); i++) {
-        audioPromises[i] = this.apiClient.synthesize(sentences[i], language, signal);
+        audioPromises[i] = this._fetchWithAbortHandling(sentences[i], language, signal);
       }
 
       // 顺序播放每句，同时预取后续句子
@@ -190,7 +190,8 @@ class SynthesisOrchestrator {
         // 等待当前句的音频就绪
         const audioBlob = await audioPromises[i];
 
-        if (signal.aborted) return;
+        // 如果被取消，audioBlob 为 null
+        if (!audioBlob || signal.aborted) return;
 
         // 第一句开始播放时隐藏 loading
         if (i === 0) {
@@ -200,7 +201,7 @@ class SynthesisOrchestrator {
         // 预取下一句（滑动窗口）
         const nextIdx = i + PREFETCH;
         if (nextIdx < sentences.length) {
-          audioPromises[nextIdx] = this.apiClient.synthesize(sentences[nextIdx], language, signal);
+          audioPromises[nextIdx] = this._fetchWithAbortHandling(sentences[nextIdx], language, signal);
         }
 
         // 播放当前句（等待播放完成再继续下一句）
@@ -216,6 +217,24 @@ class SynthesisOrchestrator {
       this.uiState.hideLoading();
     }
   }
+
+  /**
+   * 发送合成请求，AbortError 时返回 null 而非抛出异常
+   * 防止预取的 Promise 在被取消时产生 unhandled rejection
+   * @param {string} sentence - 要合成的句子
+   * @param {string} language - 语言标识符
+   * @param {AbortSignal} signal - 取消信号
+   * @returns {Promise<Blob|null>} 音频 Blob 或 null（被取消时）
+   * @private
+   */
+  _fetchWithAbortHandling(sentence, language, signal) {
+    return this.apiClient.synthesize(sentence, language, signal)
+      .catch(e => {
+        // 被取消的请求静默处理，不传播 AbortError
+        if (e.name === 'AbortError') return null;
+        throw e;
+      });
+  }
 }
 
 // ============================================================
@@ -224,7 +243,7 @@ class SynthesisOrchestrator {
 
 document.addEventListener('DOMContentLoaded', () => {
   // API 端点配置（部署时替换为实际的 Function URL）
-  const API_ENDPOINT = 'https://6jm7wfdub726hznuoo4rrlhsyi0diudr.lambda-url.ap-east-1.on.aws';
+  const API_ENDPOINT = 'https://swwdv7pnim4brazlqla3ylsxhm0vypfi.lambda-url.ap-east-1.on.aws';
 
   // 获取 DOM 元素引用
   const textArea = document.getElementById('text-input');

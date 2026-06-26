@@ -5,6 +5,18 @@ import { SynthesizeSpeechCommand } from '@aws-sdk/client-polly';
 import { pollyClient } from './pollyClient.mjs';
 import { VOICE_MAP, SUPPORTED_LANGUAGES } from './voiceMapping.mjs';
 
+/**
+ * 转义 XML 特殊字符，防止 SSML 解析错误
+ */
+function escapeXml(text) {
+  return text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;');
+}
+
 // 通用 CORS 响应头
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': '*',
@@ -32,7 +44,7 @@ export const handler = async (event) => {
   try {
     // 解析请求体
     const body = JSON.parse(event.body || '{}');
-    const { text, language } = body;
+    const { text, language, rate } = body;
 
     // 验证 text 字段：必填且非空
     if (!text || text.trim().length === 0) {
@@ -64,9 +76,14 @@ export const handler = async (event) => {
       };
     }
 
-    // 调用 Polly SynthesizeSpeech API，显式指定引擎类型以支持仅限 neural 的语音（如 Hiujin）
+    // 语速控制：默认 90%（略慢于标准速度），支持 x-slow/slow/medium/fast/x-fast 或百分比
+    const speechRate = rate || '90%';
+    const ssmlText = `<speak><prosody rate="${speechRate}">${escapeXml(text)}</prosody></speak>`;
+
+    // 调用 Polly SynthesizeSpeech API，使用 SSML 格式以支持语速控制
     const command = new SynthesizeSpeechCommand({
-      Text: text,
+      Text: ssmlText,
+      TextType: 'ssml',
       OutputFormat: 'mp3',
       VoiceId: voiceConfig.voiceId,
       LanguageCode: voiceConfig.languageCode,
